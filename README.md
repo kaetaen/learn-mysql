@@ -143,4 +143,91 @@ create table pessoas (
 
 Criamos uma tabela chamada `pessoas` dentro do banco de dados `cadastro`. Na tabelas `pessoas` temos as colunas seguidas de seus respectivos tipos.
 
+## Melhorando a estrutura do banco de dados
+
+Vamos refatorar a forma como criamos e formulamos nossos dados e tabelas. Antes disso vamos remover nosso banco de dados para recriarmos ele do "jeito certo".
+
+~~~sql
+drop database cadastro;
+~~~
+
+Vamos criar nosso banco de dados
+
+~~~sql
+create database cadastro
+default character set utf8
+default collate utf8_general_ci;
+~~~
+
+Com isso utilizamos as **constraints** e **collations** necessárias para que nosso banco de dados tenha um bom suporte para o UTF-8.
+
+**Constraints** (restrições) mantém os dados do usuário restritos, e assim evitam que dados inválidos sejam inseridos no banco, collations por sua vez, definem o conjunto de regras que o servidor irá utilizar para ordenação e comparação entre textos, ou seja, como será o funcionamento dos operadores =, >, <, order by, etc.
+
+Então, criamos nossa tabela com suas respectivas colunas:
+
+~~~sql
+create table pessoas (
+    id int not null auto_increment,
+    nome varchar (30) not null,
+    nascimento date,
+    sexo enum('M', 'F'),
+    peso decimal(5, 2),
+    altura decimal (3, 2),
+    nacionalidade varchar(20) default 'Brasil',
+    primary key (id)
+) default charset = utf8;
+~~~
+
+Criamos nossa tabela mais consistente, vamos entender o funcionamento de alguns comandos e constraints:
+
+* not null: valor obrigatório.
+* auto_increment: o valor será incrementado automaticamente;
+* primary key: define a chave primária.
+* default; define valor padrão.
+
+Sobre alguns tipos:
+
+* enum('M', 'F'): o campo aceitará somente os valores 'M' ou 'F' (case sensitive).
+* decimal(n, 2): o valor será do tipo decimal, ocupando _n_ digitos com dupla precisão. Exemplo: decimal(5, 2) == 321,56
+
+## Inserindo dados na tabela
+
+Inserir dados em uma tabela é simples:
+
+~~~sql
+insert into pessoas (id, nome, nascimento, sexo, peso, altura, nacionalidade)
+values (default, 'Paul', '1984-01-02', 'M', '78.5', '1.83', 'Japão');
+~~~
+
+Se os valores estiverem na ordem das colunas da tabela, então podemos simplificar a sintaxe:
+~~~sql
+insert into pessoas values
+(default, 'Lia', '1964-10-12', 'F', '108.5', '1.60', 'Italia');
+~~~
+
+Em caso queira inserir múltiplas linhas em um único comando:
+
+~~~sql
+insert into pessoas (id, nome, nascimento, sexo, peso, altura, nacionalidade)
+values
+(default, 'Jean', '1999-01-02', 'M', '60.9', '1.93', 'França'),
+(default, 'Max', '1996-12-25', 'M', '78.5', '1.83', 'Inglaterra'),
+(default, 'Helena', '1985-01-01', 'F', '70.1', '1.60', default);
+~~~
+
+A forma simplificada também é valida aqui:
+
+~~~sql
+insert into pessoas
+values
+(default, 'Jean', '1999-01-01', 'M', '60.9', '1.93', 'França'),
+(default, 'Max', '1996-12-25', 'M', '78.5', '1.83', 'Inglaterra'),
+(default, 'Helena', '1985', 'F', '70.1', '1.60', default);
+~~~
+
+Se quiser conferir se os valores foram inseridos, recupere todos os dados com:
+
+~~~sql
+select * from pessoas
+~~~
 
