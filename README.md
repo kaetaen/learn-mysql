@@ -18,7 +18,7 @@ Algumas empresas que usam o MySQL: Nasa, Wikimedia, Bradesco e etc.
 </details>
 
 ## Instalação
-</details>
+<details>
 Primeiro vamos atualizar o indíce dos nossos pacotes.
 ~~~bash
 $ sudo apt update
@@ -47,8 +47,9 @@ Para acessar o mysql digite o comando abaixo, pressione enter e insira a senha q
 $ mysql -u root -ṕ
 ~~~
 </details>
-## Classificação de comandos
 
+## Classificação de comandos
+<details>
 A linguagem SQL é uma só, contudo a mesma pode ser subdividida e classificada  nos seguintes grupos (tipos) de comandos denominados como linguagens
 
 Esses "tipos" são:
@@ -77,9 +78,11 @@ Esses "tipos" são:
 * **DCL**
 
   Data Control Language (Linguagem de Controle de Dados) define o controle de acesso ao banco.
+</details>
+
 
 ## Criando o primeiro banco de dados
-
+<details>
 Para criar um banco de dados é necessário rodar o comando:
 
 ~~~sql
@@ -134,9 +137,10 @@ create table pessoas (
 ~~~
 
 Criamos uma tabela chamada `pessoas` dentro do banco de dados `cadastro`. Na tabelas `pessoas` temos as colunas seguidas de seus respectivos tipos.
+</details>
 
 ## Melhorando a estrutura do banco de dados
-
+<details>
 Vamos refatorar a forma como criamos e formulamos nossos dados e tabelas. Antes disso vamos remover nosso banco de dados para recriarmos ele do "jeito certo".
 
 ~~~sql
@@ -181,9 +185,10 @@ Sobre alguns tipos:
 
 * enum('M', 'F'): o campo aceitará somente os valores 'M' ou 'F' (case sensitive).
 * decimal(n, 2): o valor será do tipo decimal, ocupando _n_ digitos com dupla precisão. Exemplo: decimal(5, 2) == 321,56
+</details>
 
 ## Inserindo dados na tabela
-
+<details>
 Inserir dados em uma tabela é simples:
 
 ~~~sql
@@ -221,5 +226,94 @@ Se quiser conferir se os valores foram inseridos, recupere todos os dados com:
 
 ~~~sql
 select * from pessoas
+~~~
+</details>
+
+## Alterando estrutura da tabela
+
+Vamos alterar a estrutura da nossa tabela, adicionando uma nova coluna:
+
+~~~sql
+alter table pessoas
+add column profissao varchar(30);
+~~~
+
+Esse comando adiciona uma coluna chamada _profissao_ na tabela pessoas. Logo todas as linhas da tabela (inclusive as que criamos) terão a coluna profissão. Por padrão, esse comando define a nova coluna como última coluna.
+
+Podemos mudar a posição da coluna caso não quisermos que a mesma seja a última.
+
+Primeiro vamos remover a coluna recém criada:
+
+~~~sql
+alter table pessoas
+drop column profissao;
+~~~
+
+Para inserir uma coluna numa posição específica utilizamos o comando:
+
+~~~sql
+alter table pessoas
+add column profissao varchar(30) after nome;
+~~~
+
+A coluna profissão será adicionada após a coluna nome.
+Para adicionar em primeiro lugar, o comando é:
+
+~~~sql
+alter table pessoas
+add column código int first;
+~~~
+
+Sendo assim, utilizamos o _first_ para colocar a nova coluna em primeiro, e o _after_ para coloca-la em outra posição, sendo que por padrão a posição sem especificação ficará como última.
+
+### Alterando o nome da coluna e/ou constraints.
+
+Para alterar o tipo da coluna e suas constraints:
+
+~~~sql
+alter table pessoas
+modify column profissao varchar(20) not null default '';
+~~~
+
+Para alterar o nome, o tipo e suas constraints:
+
+~~~sql
+alter table pessoas
+change column profissao prof varchar(20);
+~~~
+
+Onde _profissao_ é o nome antigo antigo da coluna, e _prof_ o nome atual.
+
+### Alterando o nome da tabela
+
+Alterar o nome de uma tabela é muito simples:
+
+~~~sql
+alter table pessoas
+rename to grupo;
+~~~
+
+### Vamos a prática
+
+~~~sql
+-- Cria uma tabela se ela não existir
+create table if not exists cursos (
+	nome varchar(10) not null unique, -- unique: cada nome deve ser único 
+    descricao text,
+    carga int unsigned, -- unsigned: numero sem sinal 
+    totaulas int unsigned,
+    ano year default '2016'
+) default charset = utf8;
+
+-- Alterando a tabela para adicionar a coluna idcurso
+alter table cursos
+add column idcurso int first;
+
+-- Definimos idcurso como chave primária
+alter table cursos
+add primary key(idcurso);
+
+-- Apagamos a tabela e seus dados (caso ela exista)
+drop table if exists cursos;
 ~~~
 
