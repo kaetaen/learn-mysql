@@ -9,24 +9,16 @@ repositórios entitulados "learn-alguma-coisa"
 
 Nesse aqui me propolho a escrever sobre MySQL. O meio de aprendizado principal que utilizei foi o [Curso de MySQL](https://www.youtube.com/watch?v=Ofktsne-utM&list=PLHz_AreHm4dkBs-795Dsgvau_ekxg8g1r) do Gustavo Guanabara, no entanto não foi o único.
 
-
-## Indice
-
-1. [História](#history)
-2. [Instalação](#install)
-3. [Classificação de comandos]("#sqlclass")
-4. [Criando primeiro banco de dados]("#firstdatabase")
-
-
-
-## História <a name="history"></a>
+## História
+<details>
 MySQL é um banco de dados relacional gratuito muito popular. Foi criado em 1994 na Suécia,
 por Michael Widenius e David Axmark. O MySQl comprou o MySQl em 2007, após a aquisição da Sun pela Oracle, o MySQL ficou sob posse da Oracle, que é uma das maiores produtoras de bancos de dados. Um fork popular do MySQL é o MariaDB.
 
 Algumas empresas que usam o MySQL: Nasa, Wikimedia, Bradesco e etc.
+</details>
 
-## Instalação <a name="install"></a>
-
+## Instalação
+</details>
 Primeiro vamos atualizar o indíce dos nossos pacotes.
 ~~~bash
 $ sudo apt update
@@ -54,8 +46,8 @@ Para acessar o mysql digite o comando abaixo, pressione enter e insira a senha q
 ~~~bash
 $ mysql -u root -ṕ
 ~~~
-
-## Classificação de comandos <a name="sqlclass"></a>
+</details>
+## Classificação de comandos
 
 A linguagem SQL é uma só, contudo a mesma pode ser subdividida e classificada  nos seguintes grupos (tipos) de comandos denominados como linguagens
 
@@ -86,7 +78,7 @@ Esses "tipos" são:
 
   Data Control Language (Linguagem de Controle de Dados) define o controle de acesso ao banco.
 
-## Criando o primeiro banco de dados <a name="firstdatabase"></a>
+## Criando o primeiro banco de dados
 
 Para criar um banco de dados é necessário rodar o comando:
 
