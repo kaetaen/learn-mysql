@@ -1,13 +1,14 @@
 # Aprenda MySQL
 
 ## Descrição
-
+<details>
 Sou o tipo de pessoa que gosta de estudar e aliar isso a prática. Não é todo
 dia que acordamos com criatividade para criar micro-projetos práticos. Então
 decidi unir o útil ao agradável, escrevendo sobre tudo o que eu estou estudando por meio de
 repositórios entitulados "learn-alguma-coisa"
 
 Nesse aqui me propolho a escrever sobre MySQL. O meio de aprendizado principal que utilizei foi o [Curso de MySQL](https://www.youtube.com/watch?v=Ofktsne-utM&list=PLHz_AreHm4dkBs-795Dsgvau_ekxg8g1r) do Gustavo Guanabara, no entanto não foi o único.
+</details>
 
 ## História
 <details>
@@ -230,7 +231,7 @@ select * from pessoas
 </details>
 
 ## Alterando estrutura da tabela
-
+<details>
 Vamos alterar a estrutura da nossa tabela, adicionando uma nova coluna:
 
 ~~~sql
@@ -316,4 +317,52 @@ add primary key(idcurso);
 -- Apagamos a tabela e seus dados (caso ela exista)
 drop table if exists cursos;
 ~~~
+</details>
+
+## Manipulando linhas
+<details>
+
+* Registro, linha e tupla são sinônimos.
+* Linhas são tuplas/registros
+* Colunas são campos
+
+Para modificar um campo de um registro, utilizamos o comando update
+
+~~~sql
+update cursos set nome='jwt' where idcurso='1'
+~~~
+
+para atualizarmos varios campos em uma linha:
+
+~~~sql
+update cursos
+set nome='html5', descricao='curso de html'
+where ano='2015';
+limit 1;
+~~~
+
+Lẽ-se: atualize a tabela cursos, adicionando os valores 'html5' ao campo 'nome' e 'curso de html' ao 'campo descricao' onde o ano for 2015, porém só retorne o primeiro registro com esse valor.
+
+Para deleter registros
+
+~~~sql
+delete from cursos
+where idcurso='1';
+~~~
+
+Deleter todos registros de uma tabela:
+
+~~~sql
+truncate table cursos;
+~~~
+
+Também é válido:
+
+~~~sql
+truncate cursos;
+~~~
+</details>
+
+
+
 
