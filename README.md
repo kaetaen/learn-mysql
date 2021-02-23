@@ -363,6 +363,158 @@ truncate cursos;
 ~~~
 </details>
 
+## SELECT
+
+Selecionar todos os registros da tabela cursos:
+
+~~~sql
+select * from cursos;
+~~~
+
+Selecionar todos os registros ordenados por um campo específico:
+
+~~~sql
+select * from cursos
+order by nome;
+~~~
+
+No sentido ascendente: 
+
+~~~sql
+select * from cursos
+order by nome asc;
+~~~
+
+No sentido descendente:
+
+~~~sql
+select * from cursos
+order by nome;
+~~~
+
+Especificar quais colunas retornar:
+
+~~~sql
+select nome, carga, ano from cursos
+order by nome;
+~~~
+
+Ordernar as colunas por ano, e em seguida por nome:
+
+~~~sql
+select nome, carga, ano from cursos
+order by ano, nome;
+~~~
+
+Filtrar por colunas:
+
+~~~sql
+select * from cursos
+where ano = '2016';
+~~~
+
+Todo resultado de consulta é denominado __result set__.
+
+Podemos utilizar operadores para consultas condicionais com operadores relacionais (>, <, >=, <=)
+
+Nesse caso queremos as colunas nome e ano, onde o ano for maior que 2016:
+
+~~~sql
+select nome, ano from cursos
+where ano > '2016';
+~~~
+
+Maior e menor:
+
+~~~sql
+select nome, ano from cursos
+where ano <> '2016';
+~~~
+
+Definindo um intervalo específico:
+
+~~~sql
+select nome, ano from cursos
+where ano between 2018 and 2019
+order by nome desc;
+~~~
+
+Definindo valores específicos para a consulta:
+
+~~~sql
+select nome, ano from cursos
+where ano in (2014, 2016, 2017) -- conjunto x
+~~~
+
+Onde serão retornados os registros, _se e somente se_ o ano pertencer ao conjunto x
+
+Veja alguns exemplos com operadores lógicos:
+
+~~~sql
+select * from cursos
+where carga > 20 and totaulas > 32;
+
+select * from cursos
+where carga > 20 or totaulas > 32;
+~~~
+
+Utilizamos o operador `like` para obter resultados semelhantes, e utilizamos o caractere coringa `%` que serve para substituir nenhuma ou várias ocorrências.
+
+Abaixo retornamos todo registro cujo nome tiver como inicial a letra `J`:
+
+~~~sql
+select * from cursos
+where nome like 'J%';
+~~~
+
+O operador 'not` representa a negação:
+
+~~~sql
+select * from cursos
+where nome not like '%J%';
+~~~
+
+O exemplo acima seleciona qualquer registro que não contenha a letra `J` no `nome`.
+
+Ao invés do `%` você pode utilizar o `_`, que significa que obrigatóriamente deve ter um caracter ali, seja numérico ou não.
+
+Tanto `%` como `_` são considerados `wildcards `.
+
+Por sua vez o `distinct` faz distinção. Reduzindo todas ocorrência repetidas a somente uma:
+
+~~~sql
+select distinct [coluna] * from [nome_da_tabela]
+~~~
+
+Podemos contar registros utilizando a função de agregação `count()`
+
+~~~sql
+select count(*) from tabela; -- conta todos os registros da tabela
+~~~
+
+Algumas funções de agregação:
+
+* `sum()`: soma 
+* `avg()`: média
+* `max()`: máximo
+* `min()`: minimo
 
 
+Vamos a função de agrupamento:
+
+~~~sql
+select totaulas, count(*) from cursos;
+group by totaulas;
+~~~
+
+Isso agrupa campos. No caso acima serão criados grupos para cada total de aulas.
+
+O `having` só pode ser utilizado quando o campo for o mesmo que o `group by`:
+
+~~~sql
+select ano, count(*) from cursos
+group by ano 
+having count(ano) >= 5
+order by count(*) desc;
+~~~ 
 
