@@ -21,22 +21,29 @@ Algumas empresas que usam o MySQL: Nasa, Wikimedia, Bradesco e etc.
 ## Instalação
 <details>
 Primeiro vamos atualizar o indíce dos nossos pacotes.
+	
 ~~~bash
 $ sudo apt update
 ~~~
+
 A seguir instala o pacote:
+
 ~~~bash
 $ sudo apt install mysql-server
 ~~~
+
 Execute o MySQL:
+
 ~~~bash
 sudo mysql
 ~~~
+
 Configure e defina a senha para o banco de dados:
 
 ~~~bash
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password';
 ~~~
+
 Por fim recarregue as tabelas de permissões e coloque as alterações em vigor.
 
 ~~~bash
@@ -44,9 +51,11 @@ mysql> FLUSH PRIVILEGES;
 ~~~
 
 Para acessar o mysql digite o comando abaixo, pressione enter e insira a senha que criamos
+
 ~~~bash
 $ mysql -u root -ṕ
 ~~~
+
 </details>
 
 ## Classificação de comandos
@@ -364,7 +373,8 @@ truncate cursos;
 </details>
 
 ## SELECT
-
+<details>
+	
 Selecionar todos os registros da tabela cursos:
 
 ~~~sql
@@ -518,3 +528,4 @@ having count(ano) >= 5
 order by count(*) desc;
 ~~~ 
 
+</details>
