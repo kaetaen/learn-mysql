@@ -529,3 +529,129 @@ order by count(*) desc;
 ~~~ 
 
 </details>
+
+## Chaves estrangeiras e JOIN
+
+Toda transação deve seguir o principio ACID
+
+* Atomicidade: ou toda tarefa é realizada, ou nada é considerado.
+* Consistência: se antes de uma transação o banco dados está "ok", então após ela deve permancer "ok", mantendo assim a consistência do todo.
+* Isolamento: quando temos duas transações acontecendo em paralelo, elas devem ocorrer de modo isolado, ou seja, uma não poder intervir na outra.
+* Durabilidade: Os dados devem persistir o enquanto forem necessários.
+
+### Cardinalidade e alguns tipos de relacionamentos
+
+São eles: 1:N, N:N e 1:1.
+
+Por exemplo, considere um banco de dados desenhado para manter informações relativas a um hospital. Esse banco de dados poderá ter várias tabelas como:
+
+Tabela médico onde constará informações sobre o médico profissional;
+Tabela paciente onde constará dados relativos aos assuntos médico e sobre o tratamento do paciente;
+Tabela departamento onde será tratado as informações relativas as divisões departamentais do hospital.
+
+Neste modelo teremos o seguinte cenário:
+
+Existirá o relacionamento vários-para-vários (N:N) entre os registros da tabela médico e os registro da tabela paciente, um médico atende diversos pacientes, assim como um paciente pode ser atendido por diversos médicos;
+
+Existirá o relacionamento um-para-vários (1:N) no relacionamento entre a tabela departamento em relação a tabela de médicos, pois um médico, poderá trabalhar em somente um departamento do hospital, contudo, um departamento poderá ter vários médicos.
+
+Já o relacionamento um-para-um (1:1) será usado nos casos onde o registro de uma tabela só poderá ter uma associação com um registro de outra tabela. No nosso caso, isso caberia na relação entre um quarto de apartamento e um paciente. Pois um paciente só poderá estar em um determinado apartamento, e cada apartamento só poderá abrigar um determinado paciente (partindo do princípio de quartos individuais).
+
+#### Um-para-muitos
+
+No relacionamento 1:N a tabela que receberá a chave estrangeira será a tabela _N_
+
+### Criando chave estrangeira na prática
+
+
+Para criarmos nossa chave estrageira o comando abaixo é necessário:
+
+~~~sql
+-- Adicionando a coluna que receberá a chave estrangeira
+alter table gafonhotos add column cursopreferido int;
+
+-- Definindo chave estrangeira
+alter table gafanhotos
+add foreigh key (cursopreferido) 
+references cursos (idcursos);
+
+-- primeira referência:
+update gafanhotos set cursopreferido = '6' where id = '1';
+~~~
+
+## Join
+
+Podemos visualizar os dados de uma tabela com o Join
+
+~~~sql
+select gafanhotos.nome, cursos.nome, cursos.ano
+from gafanhotos inner join cursos
+on cursos.idcurso = gafanhoto.cursopreferido
+~~~
+
+Seleciona o nome do aluno, o nome do curso, o ano do cursos das tabelas gafanhoto e cursos
+juntando as colunas selecionadas numa única tabela.
+Onde o id do curso for igual ao curso preferido.
+O `on`  sempre será utiizando para termos referencia dos dados.
+
+O `join` puro é considerado um _inner join_ ou seja, ele faz a junção baseado nas relações.
+
+Dá para simplificar criando alias dos nomes das tabelas:
+
+
+~~~sql
+select g.nome, c.nome, c.ano
+from gafanhotos as g inner join cursos as c
+on c.idcurso = g.cursopreferido
+~~~
+
+Para mostrarmos todos as colunas independente de relacionamento, utilizamos o comando `outer join` 
+
+~~~sql
+select g.nome, c.nome, c.ano
+from gafanhotos as g outer join cursos as c
+on c.idcurso = g.cursopreferido
+~~~
+Podemos priorizar os dados da tabela da esquerda ou direita com _left join_ e _right join_
+
+Esquerda:
+
+~~~sql
+select g.nome, c.nome, c.ano
+from gafanhotos as g right outer join cursos as c
+on c.idcurso = g.cursopreferido
+~~~
+
+Direita:
+
+~~~sql
+select g.nome, c.nome, c.ano
+from gafanhotos as g left outer join cursos as c
+on c.idcurso = g.cursopreferido
+~~~
+
+## Inner Join com várias tabelas
+
+~~~sql
+-- Tabela intermediária para resolver uma relação N:N
+create table gafanhoto_assiste_cursos (
+  id int not null  auto_increment,
+  data date,
+  idgafanhoto int,
+  id curso int,
+  primary key (id),
+  foreigh key (idgafanhoto) references gafanhoto(id),
+  foreigh key (idcurso) references cursos (idcurso)
+
+) default charset = utf8;
+
+insert into gafanhoto_assiste_cursos values
+(default, '2010-05-10', '1', '2');
+
+
+select g.nome, c.nome from gafanhotos g
+join gafanhoto_assiste_cursos a
+on g.id = a.idgafanhoto 
+join curso c 
+on c.cursoid = a.idgafanhoto
+~~~
